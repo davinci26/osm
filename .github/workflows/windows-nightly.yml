@@ -16,7 +16,7 @@ jobs:
   test:
     name: Windows Cluster Nightly Job
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout v2
         uses: actions/checkout@v2
