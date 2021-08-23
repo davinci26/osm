@@ -7,7 +7,7 @@ name: Windows Nightly Job
 on:
   push:
     branches:
-      - windowsNightlyJob
+      - "*"
 env:
   CTR_REGISTRY: openservicemesh
   CTR_TAG: latest-main
