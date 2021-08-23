@@ -1,9 +1,13 @@
 name: Windows Nightly Job
-on: 
-  workflow_run:
-    workflows: ["Windows Images"]
-    types: [completed]
+# on: 
+#   workflow_run:
+#     workflows: ["Windows Images"]
+#     types: [completed]
 
+on:
+  push:
+    branches:
+      - windowsNightlyJob
 env:
   CTR_REGISTRY: openservicemesh
   CTR_TAG: latest-main
