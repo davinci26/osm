@@ -17,11 +17,11 @@ jobs:
       - name: Checkout v2
         uses: actions/checkout@v2
       - name: Authenticate and set context
-        uses: redhat-actions/oc-login@v1
+        uses: azure/k8s-set-context@v1
         with:
-          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
-          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
-          insecure_skip_tls_verify: true
+          method: kubeconfig
+          kubeconfig: ${{ secrets.WINDOWS_SERVER }}
+        id: setcontext
       - name: Test oc
         run: oc version --client
       - name: Setup Go 1.16
@@ -34,14 +34,5 @@ jobs:
           go test ./tests/e2e -test.v -ginkgo.v -ginkgo.progress -ginkgo.focus="\bCrossPlat\b" -test.timeout 180m -deployOnWindowsWorkers=true
       - name: Cleanup resources
         if: ${{ always() }}
-        env:
-          BOOKWAREHOUSE_NAMESPACE: bookwarehouse
-          BOOKBUYER_NAMESPACE: bookbuyer
-          BOOKSTORE_NAMESPACE: bookstore
-          BOOKTHIEF_NAMESPACE: bookthief
-          MESH_NAME: osm
-          K8S_NAMESPACE: osm-system
-          TIMEOUT: 90s
         run: |
-          touch .env
-          ./demo/clean-kubernetes.sh
+          kubectl delete service vault -n osm-system --ignore-not-found --wait
