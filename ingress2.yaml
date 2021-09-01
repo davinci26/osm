@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bookbuyer
+  namespace: bookbuyer
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /bookbuyer
+        pathType: Prefix
+        backend:
+          service:
+            name: bookbuyer
+            port:
+              number: 14001
+---
+kind: IngressBackend
+apiVersion: policy.openservicemesh.io/v1alpha1
+metadata:
+  name: bookbuyer
+  namespace: bookbuyer
+spec:
+  backends:
+  - name: bookbuyer
+    port:
+      number: 14001
+      protocol: http
+  sources:
+  - kind: Service
+    namespace: "ngnix-ingress"
+    name: nginx-ingress-ingress-nginx-controller

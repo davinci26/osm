@@ -48,7 +48,7 @@ metadata:
 spec:
   ports:
 
-  - port: 9999
+  - port: 14001
     name: dummy-unused-port
 
   selector:
